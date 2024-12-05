@@ -1,0 +1,254 @@
+openapi: 3.0.0
+info:
+  title: home-iot-api
+  description: The API for the EatBacon IOT project
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/HEIDIEUDONNE19/ZLib/1.0.0
+  description: SwaggerHub API Library
+paths:
+  /books:
+    get:
+      tags:
+      - BOOKS
+      description: returns all books
+      operationId: getBooks
+      parameters:
+      - name: bookName
+        in: query
+        description: name of the book
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: releaseDate
+        in: query
+        description: book's release date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: All books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/book'
+    post:
+      tags:
+      - BOOK
+      operationId: registerBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/createBook'
+      responses:
+        "200":
+          description: successfully registered books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/book'
+  /books/{bookId}:
+    put:
+      tags:
+      - BOOK
+      description: update book
+      operationId: editBook
+      parameters:
+      - name: bookId
+        in: path
+        description: Book identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/book'
+      responses:
+        "200":
+          description: successfully updated book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/book'
+    delete:
+      tags:
+      - BOOK
+      description: delete book
+      operationId: deleteBoook
+      parameters:
+      - name: bookId
+        in: path
+        description: Book identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      responses:
+        "200":
+          description: successfully deleted book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/book'
+  /authors:
+    get:
+      tags:
+      - AUTHORS
+      description: returns all authors
+      operationId: getAuthors
+      parameters:
+      - name: authorName
+        in: query
+        description: name of the author
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: All authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/author'
+    post:
+      tags:
+      - Author
+      operationId: registerAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/createAuthor'
+      responses:
+        "200":
+          description: successfully registered books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/author'
+  /authors/{authorId}:
+    put:
+      tags:
+      - Author
+      description: update author
+      operationId: editAuthor
+      parameters:
+      - name: authorId
+        in: path
+        description: Author identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/author'
+      responses:
+        "200":
+          description: successfully updated author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/author'
+    delete:
+      tags:
+      - AUTHOR
+      description: delete author
+      operationId: deleteAuthor
+      parameters:
+      - name: authorId
+        in: path
+        description: Author identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      responses:
+        "200":
+          description: successfully deleted author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/author'
+components:
+  schemas:
+    book:
+      allOf:
+      - $ref: '#/components/schemas/bookIdentifier'
+      - $ref: '#/components/schemas/createBook'
+    bookIdentifier:
+      type: object
+      properties:
+        id:
+          type: number
+    createBook:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: number
+        topic:
+          type: string
+    author:
+      allOf:
+      - $ref: '#/components/schemas/authorIdentifier'
+      - $ref: '#/components/schemas/createAuthor'
+    authorIdentifier:
+      type: object
+      properties:
+        id:
+          type: number
+    createAuthor:
+      type: object
+      properties:
+        name:
+          type: string
+        author:
+          type: string
+        sex:
+          type: string
